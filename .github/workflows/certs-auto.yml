@@ -16,7 +16,7 @@ jobs:
       - name: Install nginx
         run: |
           sudo apt-get update -y
-          sudo apt install nginx/1.18.0 -y
+          sudo apt install nginx -y
           
       - name: Copy archives
         run: |
