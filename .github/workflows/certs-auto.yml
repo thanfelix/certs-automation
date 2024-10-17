@@ -34,6 +34,8 @@ jobs:
         env:
           CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
+          CA_BASE64: ${{ secrets.CA_INTERMEDIARIA }}
+          ROOT_BASE64: ${{ secrets.ROOT_CA }} 
 
       - name: Restart Nginx to apply new certificate
         run: |
