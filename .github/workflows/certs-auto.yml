@@ -31,7 +31,7 @@ jobs:
           echo -e "$CERTIFICADO_BASE64\n$CA_BASE64\n$ROOT_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.crt
           echo "$CHAVE_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.key > /dev/null
           cat /etc/nginx/ssl/petmatching.com.br.crt
-          /etc/nginx/ssl/petmatching.com.br.key
+          cat /etc/nginx/ssl/petmatching.com.br.key
           sudo nginx -t
           sudo systemctl reload nginx
           sleep 15
