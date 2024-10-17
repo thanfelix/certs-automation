@@ -28,9 +28,8 @@ jobs:
           echo "$PETMATCHING_CRT" "$CA_INTERMEDIARIA" "$ROOT_CA" | base64 --decode | sudo tee /etc/nginx/ssl/petmaching.com.br.crt
           echo "$PETMATCHING_KEY" | base64 --decode | sudo tee /etc/nginx/ssl/petmaching.com.br.key
         env:
-          CERTIFICADO_BASE64: ${{ secrets.CERTIFICADO_BASE64 }}
-          CHAVE_BASE64: ${{ secrets.CHAVE_BASE64 }}
-          CA_CHAIN_BASE64: ${{ secrets.CA_CHAIN_BASE64 }}
+          CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
+          CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
 
       - name: Restart Nginx to apply new certificate
         run: sudo systemctl restart nginx
