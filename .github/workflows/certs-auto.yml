@@ -29,6 +29,7 @@ jobs:
         run: |
           echo "$PETMATCHING_CRT" "$CA_INTERMEDIARIA" "$ROOT_CA" | base64 --decode | sudo tee etc/nginx/ssl/petmaching.com.br.crt & sudo cp -v etc/nginx/ssl/petmaching.com.br.crt /etc/nginx/ssl/
           echo "$PETMATCHING_KEY" | base64 --decode | sudo tee etc/nginx/ssl/petmaching.com.br.key & sudo cp -v etc/nginx/ssl/petmaching.com.br.key /etc/nginx/ssl/
+          sudo nginx -t
         env:
           CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
@@ -37,8 +38,10 @@ jobs:
         run: |
           sudo systemctl restart nginx
           sleep 10        
+          sudo systemctl status nginx
+          curl -I https://127.0.0.1 -k
 
       - name: Test a certificate
         run: |
-          echo -s | openssl s_client -servername petmatching.com.br -connect localhost:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
-          echo -s | openssl s_client -servername petmatching.com.br -connect localhost:443 2>&1 | grep "Verify return code"
+          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
+          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 | grep "Verify return code"
