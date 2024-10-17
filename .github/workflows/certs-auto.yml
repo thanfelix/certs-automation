@@ -27,7 +27,7 @@ jobs:
 
       - name: Criar o certificado a partir do Base64
         run: |
-          echo "CERTIFICADO_BASE64" "$CA_BASE64" "$ROOT_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.crt 
+          echo -e "$CERTIFICADO_BASE64\n$CA_BASE64\n$ROOT_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.crt 
           echo "$CHAVE_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.key 
           cat /etc/nginx/ssl/petmatching.com.br.crt
           cat /etc/nginx/ssl/petmatching.com.br.key 
