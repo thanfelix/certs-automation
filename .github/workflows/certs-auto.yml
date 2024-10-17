@@ -30,7 +30,7 @@ jobs:
           echo "CERTIFICADO_BASE64" "$CA_BASE64" "$ROOT_BASE64" | base64 --decode | sudo tee etc/nginx/ssl/petmaching.com.br.crt & sudo cp -v etc/nginx/ssl/petmaching.com.br.crt /etc/nginx/ssl/
           echo "$CHAVE_BASE64" | base64 --decode | sudo tee etc/nginx/ssl/petmaching.com.br.key & sudo cp -v etc/nginx/ssl/petmaching.com.br.key /etc/nginx/ssl/
           sudo nginx -t
-          openssl x509 -in /etc/nginx/ssl/petmaching.com.br.crt -text -noout | gre "not"
+          openssl x509 -in /etc/nginx/ssl/petmaching.com.br.crt -text -noout | grep "not"
         env:
           CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
