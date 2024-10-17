@@ -32,7 +32,7 @@ jobs:
           cat /etc/nginx/ssl/petmatching.com.br.crt
           cat /etc/nginx/ssl/petmatching.com.br.key 
           sudo nginx -t
-          openssl x509 -in /etc/nginx/ssl/petmatching.com.br.crt -text -noout | grep "not"
+          openssl x509 -in /etc/nginx/ssl/petmatching.com.br.crt -text -noout
         env:
           CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
