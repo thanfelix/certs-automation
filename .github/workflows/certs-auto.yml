@@ -29,26 +29,20 @@ jobs:
         run: |
           echo -e "$CERTIFICADO_BASE64\n$CA_BASE64\n$ROOT_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.crt 
           echo "$CHAVE_BASE64" | base64 --decode | sudo tee /etc/nginx/ssl/petmatching.com.br.key 
-          cat /etc/nginx/ssl/petmatching.com.br.crt
-          cat /etc/nginx/ssl/petmatching.com.br.key 
           sudo nginx -t
-          openssl x509 -in /etc/nginx/ssl/petmatching.com.br.crt -text -noout | grep "Not"
+          sudo systemctl restart nginx
+          sleep 10
+          sudo systemctl status nginx
+          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
+          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 | grep "Verify return code"
+
         env:
           CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
           CA_BASE64: ${{ secrets.CA_INTERMEDIARIA }}
           ROOT_BASE64: ${{ secrets.ROOT_CA }} 
 
-      - name: Restart Nginx to apply new certificate
-        run: |
-          sudo systemctl restart nginx
-          sleep 10        
-          sudo systemctl status nginx
-          echo $(sudo netstat -ntlp | grep 443)
-          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
-          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 | grep "Verify return code"
-
-      - name: Test a certificate
-        run: |
-          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
-          echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 | grep "Verify return code"
+        #- name: Test a certificate
+        #run: |
+        #  echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
+        #  echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 | grep "Verify return code"
