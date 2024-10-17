@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo cp -rv etc/nginx /etc/nginx
           sudo cp -rv var/log/nginx /var/log/nginx
-          mkdir /etc/nginx/ssl
+          sudo mkdir /etc/nginx/ssl
 
       - name: Criar o certificado a partir do Base64
         run: |
