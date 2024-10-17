@@ -34,7 +34,9 @@ jobs:
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
 
       - name: Restart Nginx to apply new certificate
-        run: sudo systemctl restart nginx
+        run: |
+          sudo systemctl restart nginx
+          sleep 10        
 
       - name: Test a certificate
         run: |
