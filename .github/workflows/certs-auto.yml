@@ -32,7 +32,7 @@ jobs:
           cat /etc/nginx/ssl/petmatching.com.br.crt
           cat /etc/nginx/ssl/petmatching.com.br.key 
           sudo nginx -t
-          openssl x509 -in /etc/nginx/ssl/petmatching.com.br.crt -text -noout
+          openssl x509 -in /etc/nginx/ssl/petmatching.com.br.crt -text -noout | grep "Not"
         env:
           CERTIFICADO_BASE64: ${{ secrets.PETMATCHING_CRT }}
           CHAVE_BASE64: ${{ secrets.PETMATCHING_KEY }}
@@ -44,7 +44,6 @@ jobs:
           sudo systemctl restart nginx
           sleep 10        
           sudo systemctl status nginx
-          curl -I https://127.0.0.1 -k
           netstat -ntlp | grep 443
           echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 |openssl x509 -noout -issuer -dates -subject | grep "not"
           echo -s | openssl s_client -servername petmatching.com.br -connect 127.0.0.1:443 2>&1 | grep "Verify return code"
